@@ -16,7 +16,7 @@ readNumber = do
      else pure Nothing
 
 countdowns : IO ()
-countdowns = do putStr "Enter starting numer: "
+countdowns = do putStr "Enter starting number: "
                 Just startNum <- readNumber | Nothing => do putStrLn "Invalid input"
                                                             countdowns
                 countdown startNum
