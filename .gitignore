@@ -1,0 +1,5 @@
+# Ignore Idris binary files
+*.ibc
+
+# Ignore VS Code settings
+.vscode/settings.json
