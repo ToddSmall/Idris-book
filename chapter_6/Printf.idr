@@ -21,7 +21,7 @@ toFormat ('%' :: 'd' :: chars) = Number (toFormat chars)
 toFormat ('%' :: 's' :: chars) = Str (toFormat chars)
 toFormat ('%' :: chars) = Lit "%" (toFormat chars)
 toFormat (c :: chars) = case toFormat chars of
-                             Lit lit chars' => Lit (strCons c lit) chars'
+                             Lit lit fmt => Lit (strCons c lit) fmt
                              fmt => Lit (strCons c "") fmt
 
 printf : (fmt : String) -> PrintfType (toFormat (unpack fmt))
