@@ -114,26 +114,17 @@ getEntry pos store = let store_items = items store in
                          case integerToFin pos (size store) of
                               Nothing => Just ("Out of range\n", store)
                               Just id => Just (display (index id store_items) ++ "\n", store)
-                         
-getAllEntries : (store : DataStore) -> Maybe (String, DataStore)
-getAllEntries store = case (helper "" ((cast (size store)) - 1) store) of
-                           Just (entries_ok) => Just (entries_ok, store)
-                           Nothing => Nothing
-  where
-    helper : (acc : String) -> (pos : Integer) -> (store : DataStore) -> Maybe String
-    helper acc 0 store = case getEntry 0 store of
-                              Just (e, store) => Just ("0:" ++ e ++ acc)
-                              Nothing => Nothing
-    helper acc pos store = case getEntry pos store of
-                                Just (e, store) => helper ((show pos) ++ ":" ++ e ++ acc) (pos - 1) store
-                                Nothing => Nothing
+
+getAllEntries : (label : Nat) -> Vect _ (SchemaType schema) -> String
+getAllEntries label [] = ""
+getAllEntries label (x :: xs) = show label ++ ":" ++ display x ++ "\n" ++ getAllEntries (label + 1) xs
 
 processInput : DataStore -> String -> Maybe (String, DataStore)
 processInput store input
   = case parse (schema store) input of
          Nothing => Just ("Invalid command\n", store)
          Just (Add item) => Just ("ID " ++ show (size store) ++ "\n", addToStore store item)
-         Just GetAll => getAllEntries store
+         Just GetAll => Just (getAllEntries 0 (items store), store)
          Just (Get pos) => getEntry pos store
          Just (SetSchema schema') => case setSchema store schema' of
                                           Nothing => Just ("Can't update schema\n", store)
