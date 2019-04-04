@@ -22,4 +22,5 @@ refuel (Car fuel) = Car 100
 refuel (Bus fuel) = Car 200
 refuel Unicycle impossible
 refuel Bicycle impossible
+refuel Tram impossible
 
