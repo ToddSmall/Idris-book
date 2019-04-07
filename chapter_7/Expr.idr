@@ -44,3 +44,13 @@ Show ty => Show (Expr ty) where
 
 (Abs ty, Integral ty, Neg ty) => Cast (Expr ty) ty where
     cast x = eval x
+
+Functor Expr where
+    map func (Val x) = Val (func x)
+    map func (Add x y) = Add (map func x) (map func y)
+    map func (Sub x y) = Sub (map func x) (map func y)
+    map func (Mul x y) = Mul (map func x) (map func y)
+    map func (Div x y) = Div (map func x) (map func y)
+    map func (Mod x y) = Mod (map func x) (map func y)
+    map func (Abs x) = Abs (map func x)
+    
